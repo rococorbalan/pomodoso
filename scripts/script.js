@@ -1,16 +1,24 @@
 let countdown;
-let timeLeft = 10;
+let timeLeft;
 
 const timerDisplay = document.getElementById('timer');
 const startButton = document.getElementById('startButton');
+const pauseButton = document.getElementById('pauseButton')
+const statusDisplay = document.getElementById('status');
 
-let time = parseFloat(prompt("Minutes")) * 60;
+//let time = parseFloat(prompt("Minutes")) * 60;
+let time = 5;
+let breakTime = 7;
+
+let isBreak = false;
+let isWork = true;
+
 timeFormat(time);
 
+timeLeft = time;
 startButton.addEventListener('click', startTimer);
 function startTimer() {
     clearInterval(countdown);
-    timeLeft = time;
     timeFormat(timeLeft);
 
     countdown = setInterval(() => {
@@ -20,9 +28,32 @@ function startTimer() {
         if(timeLeft <= 0){
             clearInterval(countdown);
             alert("Time's up!")
+            if(isWork){
+                isWork = false;
+                isBreak = true;
+
+                timeFormat(breakTime);
+                timeLeft = breakTime;
+                clearInterval(countdown);
+
+                statusDisplay.textContent = "BREAK";
+            }else if (isBreak){
+                isWork = true;
+                isBreak = false;
+
+                timeFormat(time);
+                timeLeft = time;
+                clearInterval(countdown);
+
+                statusDisplay.textContent = "WORK";
+            }
         }
     }, 1000);
 }
+
+
+pauseButton.addEventListener('click', ()=> {clearInterval(countdown)});
+
 
 function timeFormat(seconds){
     const hours = Math.floor(seconds / 3600);
