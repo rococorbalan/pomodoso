@@ -1,3 +1,15 @@
-*{
-    background-color: rgb(214, 201, 182);
+body{
+    background-color: #FCFAEE;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    
+}
+
+input {
+    width: 50px;
 }

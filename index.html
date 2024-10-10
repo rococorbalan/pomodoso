@@ -11,15 +11,21 @@
 
 </head>
 <body>
-    <h1>TIMER</h1>
-    <div id="timer">30</div>
-    <button id="start-button">Start Timer</button>
-    <button id="pause-button">Pause Timer</button>
-    <div id="status">WORK</div>
+    <div class="container">
+        <div id="timer">30</div>
 
-    <input type="number" id="work-input" placeholder="Work Time">
-    <input type="number" id="break-input" placeholder="Break Time">
+        <div id="button-container">
+            <button id="restart-button">Restart Timer</button>
+            <button id="toggle-button">Start Timer</button>
+            <button id="skip-button">Skip Timer</button>
+        </div>
+        
+        <div id="status" style="display: none;">WORK</div>
 
-
+        <div id="input-container">
+            <input type="number" id="work-input" placeholder="Work Time">
+            <input type="number" id="break-input" placeholder="Break Time">
+        </div>
+    </div>
 </body>
 </html>
