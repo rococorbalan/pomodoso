@@ -1,6 +1,11 @@
 let countdown;
 let timeLeft;
 
+const pauseIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"/></svg>'
+const playIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/></svg>'
+
+const toggleIcon = document.getElementById('icon');
+
 const timerDisplay = document.getElementById('timer');
 
 const toggleButton = document.getElementById('toggle-button');
@@ -18,14 +23,16 @@ let isWork = true;
 let isTimerOn = false;
 
 let workInput = document.getElementById('work-input'); 
-let breakInput = document.getElementById('break-input')
+let breakInput = document.getElementById('break-input');
+
+
 
 timeLeft = time;
 
 workInput.addEventListener('input', () => {
     if(workInput.value != ''){
-        time = workInput.value;
-        if (isTimerOn) {
+        time = workInput.value*60;
+        if (isTimerOn && isWork) {
             timeFormat(time);
             timeLeft = time;
         }else if(!isTimerOn && isWork){
@@ -43,13 +50,16 @@ workInput.addEventListener('input', () => {
 
 breakInput.addEventListener('input', () => {
     if(breakInput.value != ''){
-        breakTime = breakInput.value;
-        if (isTimerOn) {
+        breakTime = breakInput.value*60;
+        if (isTimerOn && isBreak) {
+            timeFormat(breakTime);
+            timeLeft = breakTime;
+        }else if(!isTimerOn && isBreak){
             timeFormat(breakTime);
             timeLeft = breakTime;
         }
     }else{
-        breakTime = 300
+        breakTime = 300;
         if (isTimerOn) {
             timeFormat(breakTime);
             timeLeft = breakTime;
@@ -70,7 +80,7 @@ toggleButton.addEventListener('click', () => {
 restartButton.addEventListener('click', () => {
     clearInterval(countdown);
     if (isTimerOn){
-        toggleButton.textContent = "Start Timer"
+        toggleIcon.innerHTML = playIcon;
         isTimerOn = false;
     }
 
@@ -90,7 +100,7 @@ skipButton.addEventListener('click', () => {
 
 
 function startTimer() {
-    toggleButton.textContent = "Pause Timer"
+    toggleIcon.innerHTML = pauseIcon;
     isTimerOn = true;
     clearInterval(countdown);
     timeFormat(timeLeft);
@@ -112,7 +122,7 @@ function switchWork(){
     if(isWork){
         isWork = false;
         isTimerOn = false;
-        toggleButton.textContent = "Start Timer"
+        toggleIcon.innerHTML = playIcon;
 
         timeFormat(breakTime);
         timeLeft = breakTime;
@@ -122,7 +132,7 @@ function switchWork(){
     }else if (!isWork){
         isWork = true;
         isTimerOn = false;
-        toggleButton.textContent = "Start Timer"
+        toggleIcon.innerHTML = playIcon;
 
         timeFormat(time);
         timeLeft = time;
@@ -136,7 +146,7 @@ function switchWork(){
 function pauseTimer(){
     clearInterval(countdown); 
     isTimerOn = false;
-    toggleButton.textContent = "Start Timer"
+    toggleIcon.innerHTML = playIcon;
 }
 
 

@@ -1,5 +1,14 @@
+@import url('https://fonts.googleapis.com/css2?family=Afacad+Flux:wght@100..1000&display=swap');
+* {
+    font-family: "Afacad Flux", sans-serif;
+}
+
 body{
-    background-color: #FCFAEE;
+    background-color: #A5B68D;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .container {
@@ -7,9 +16,72 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    
+
+    width: 350px;
+    height: 350px;
+
+    border: 16px solid;
+    border-color: #DA8359;
+    border-radius: 350px;
+    background-color: #ECDFCC;
 }
 
 input {
-    width: 50px;
+    text-align: center;
+    font-size: 600;
+
+    width: 42px;
+    height: 42px;
+    border: none;
+    border-radius: 10px;
+    
+    margin: 0 10px 0 10px;
+}
+
+input:focus {
+    outline: none;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#timer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 100px;
+    width: 250px;
+    max-height: 100px;
+
+    margin-top: 50px;
+
+    font-weight: bold;
+}
+
+#button-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    width: 230px;
+    height: auto;
+
+    margin: 10px 0 10px 0 ;
+}
+
+svg {
+    min-width: 23px;
+    font-weight: bolder;
+    height: auto;
 }
