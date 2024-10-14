@@ -1,5 +1,6 @@
 let countdown;
 let timeLeft;
+let intervalsLeft;
 
 let bellSound = new Audio('../media/bell.wav');
 
@@ -21,7 +22,7 @@ const breakColor = '#698474';
 let time = 1500;
 let breakTime = 300;
 let longBreakTime = 600;
-let intervalsBeforeBreak = 2;
+let intervalsBeforeBreak = 4;
 timeFormat(time);
 
 
@@ -31,9 +32,11 @@ let isTimerOn = false;
 
 let workInput = document.getElementById('work-input'); 
 let breakInput = document.getElementById('break-input');
+let longBreakInput = document.getElementById('long-input'); 
+let intervalInput = document.getElementById('interval-input');
 
 
-
+intervalsLeft = intervalsBeforeBreak;
 timeLeft = time;
 
 workInput.addEventListener('input', () => {
@@ -58,7 +61,7 @@ workInput.addEventListener('input', () => {
 breakInput.addEventListener('input', () => {
     if(breakInput.value != ''){
         breakTime = breakInput.value*60;
-        if (isTimerOn && !isWork) {
+        if (isTimerOn && (!isWork && !isLongBreak)) {
             timeFormat(breakTime);
             timeLeft = breakTime;
         }else if(!isTimerOn && !isWork){
@@ -70,6 +73,37 @@ breakInput.addEventListener('input', () => {
         if (isTimerOn) {
             timeFormat(breakTime);
             timeLeft = breakTime;
+        }
+    }
+});
+
+longBreakInput.addEventListener('input', () => {
+    if(longBreakInput.value != ''){
+        longBreakTime = longBreakInput.value*60;
+        if (isTimerOn && isLongBreak) {
+            timeFormat(longBreakTime);
+            timeLeft = longBreakTime;
+        }else if(!isTimerOn && isLongBreak){
+            timeFormat(longBreakTime);
+            timeLeft = longBreakTime;
+        }
+    }else{
+        longBreakTime = 600;
+        if (isTimerOn) {
+            timeFormat(longBreakTime);
+            timeLeft = longBreakTime;
+        }
+    }
+});
+
+intervalInput.addEventListener('input', () => {
+    if (intervalInput.value != ''){
+        if(intervalInput > 0){
+            intervalsBeforeBreak = intervalInput.value
+            intervalsLeft = intervalsBeforeBreak ;
+        }else{
+            intervalsBeforeBreak = 1
+            intervalsLeft = intervalsBeforeBreak;
         }
     }
 });
@@ -140,10 +174,10 @@ function switchWork(){
         clearInterval(countdown);
 
     }else if (!isWork && !isLongBreak){
-        if(intervalsBeforeBreak == 0){
+        if(intervalsLeft == 0){
             isLongBreak = true;
         }else {
-            intervalsBeforeBreak--;
+            intervalsLeft--;
             isWork = true;
             toggleBorderColor();
             isTimerOn = false;
@@ -155,7 +189,7 @@ function switchWork(){
         }
 
     }if(isLongBreak){
-        intervalsBeforeBreak = 2;
+        intervalsLeft = intervalsBeforeBreak;
         isWork = false;
         isLongBreak = false;
         toggleBorderColor();
