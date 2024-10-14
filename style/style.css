@@ -11,7 +11,7 @@ body{
     flex-direction: column;
 }
 
-.container {
+#container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -22,6 +22,7 @@ body{
 
     border: 16px solid;
     border-color: #DA8359;
+    outline: 8px solid #698474;
     border-radius: 350px;
     background-color: #ECDFCC;
 }

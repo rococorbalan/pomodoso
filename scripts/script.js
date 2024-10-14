@@ -1,6 +1,8 @@
 let countdown;
 let timeLeft;
 
+let bellSound = new Audio('../media/bell.wav');
+
 const pauseIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pause-fill" viewBox="0 0 16 16"><path d="M5.5 3.5A1.5 1.5 0 0 1 7 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5m5 0A1.5 1.5 0 0 1 12 5v6a1.5 1.5 0 0 1-3 0V5a1.5 1.5 0 0 1 1.5-1.5"/></svg>'
 const playIcon = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-play-fill" viewBox="0 0 16 16"><path d="m11.596 8.697-6.363 3.692c-.54.313-1.233-.066-1.233-.697V4.308c0-.63.692-1.01 1.233-.696l6.363 3.692a.802.802 0 0 1 0 1.393"/></svg>'
 
@@ -12,14 +14,19 @@ const toggleButton = document.getElementById('toggle-button');
 const restartButton = document.getElementById('restart-button');
 const skipButton = document.getElementById('skip-button');
 
-const statusDisplay = document.getElementById('status');
+let borderColor = document.getElementById('container').style.borderColor;
+const workColor = '#DA8359';
+const breakColor = '#698474';
 
 let time = 1500;
 let breakTime = 300;
+let longBreakTime = 600;
+let intervalsBeforeBreak = 2;
 timeFormat(time);
 
 
 let isWork = true;
+let isLongBreak = false;
 let isTimerOn = false;
 
 let workInput = document.getElementById('work-input'); 
@@ -51,10 +58,10 @@ workInput.addEventListener('input', () => {
 breakInput.addEventListener('input', () => {
     if(breakInput.value != ''){
         breakTime = breakInput.value*60;
-        if (isTimerOn && isBreak) {
+        if (isTimerOn && !isWork) {
             timeFormat(breakTime);
             timeLeft = breakTime;
-        }else if(!isTimerOn && isBreak){
+        }else if(!isTimerOn && !isWork){
             timeFormat(breakTime);
             timeLeft = breakTime;
         }
@@ -87,9 +94,12 @@ restartButton.addEventListener('click', () => {
     if(isWork) {
         timeLeft = time;
         timeFormat(timeLeft);
-    }else{
+    }else if (!isWork && !isLongBreak){
         timeLeft = breakTime;
         timeFormat(timeLeft);
+    }else if (isLongBreak){
+        timeLeft = longBreakTime;
+        timeFormat(timeLeft)
     }
 })
 
@@ -111,7 +121,7 @@ function startTimer() {
 
         if(timeLeft <= 0){
             clearInterval(countdown);
-            alert("Time's up!")
+            bellSound.play();
             switchWork();
         }
     }, 1000);
@@ -121,6 +131,7 @@ function startTimer() {
 function switchWork(){
     if(isWork){
         isWork = false;
+        toggleBorderColor();
         isTimerOn = false;
         toggleIcon.innerHTML = playIcon;
 
@@ -128,17 +139,32 @@ function switchWork(){
         timeLeft = breakTime;
         clearInterval(countdown);
 
-        statusDisplay.textContent = "BREAK";
-    }else if (!isWork){
-        isWork = true;
+    }else if (!isWork && !isLongBreak){
+        if(intervalsBeforeBreak == 0){
+            isLongBreak = true;
+        }else {
+            intervalsBeforeBreak--;
+            isWork = true;
+            toggleBorderColor();
+            isTimerOn = false;
+            toggleIcon.innerHTML = playIcon;
+
+            timeFormat(time);
+            timeLeft = time;
+            clearInterval(countdown);
+        }
+
+    }if(isLongBreak){
+        intervalsBeforeBreak = 2;
+        isWork = false;
+        isLongBreak = false;
+        toggleBorderColor();
         isTimerOn = false;
         toggleIcon.innerHTML = playIcon;
 
-        timeFormat(time);
-        timeLeft = time;
+        timeFormat(longBreakTime);
+        timeLeft = longBreakTime;
         clearInterval(countdown);
-
-        statusDisplay.textContent = "WORK";
     }
 }
 
@@ -175,6 +201,19 @@ function timeFormat(seconds){
         timerDisplay.textContent = formattedTime;
     }
     
+}
+
+function toggleBorderColor() {
+    const container = document.getElementById('container');
+    if (borderColor === breakColor) {
+        container.style.borderColor = workColor;
+        container.style.outlineColor = breakColor;
+        borderColor = workColor;
+    } else {
+        container.style.borderColor = breakColor;
+        container.style.outlineColor = workColor; 
+        borderColor = breakColor;
+    }
 }
 
 
