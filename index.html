@@ -6,6 +6,7 @@
     <title>Pomodoso Timer</title>
     
     <script src="../scripts/script.js" defer></script>
+    <script src="../scripts/popup.js" defer></script>
 
     <link rel="stylesheet" href="style/style.css">
 
@@ -41,6 +42,18 @@
             <input type="number" min="0" id="long-input" placeholder="Long Break">
             <input type="number" min="0" id="interval-input" placeholder="Interval">
         </div>
+
+     <button data-modal-target="#modal">Open</button>
     </div>
+    <div id="modal" class="modal">
+        <div class="modal-header">
+            <div class="title">Example</div>
+            <button data-close-button class="close-button">&times;</button>
+        </div>
+        <div class="modal-bod">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Harum eveniet provident mollitia, voluptatem sapiente nesciunt, aspernatur officiis reiciendis ipsa totam unde non tenetur sunt accusantium? Aliquid, vero! Eos rem sed fuga autem explicabo atque magnam sit placeat, totam cupiditate voluptates aut nemo esse minima fugit optio quae error distinctio pariatur necessitatibus repellat. Eligendi iste eum perspiciatis quia aliquam? Officiis fugiat, ea, odio adipisci quasi rerum mollitia repudiandae explicabo veniam quidem excepturi porro deserunt esse fugit labore enim. Tempora, aperiam facilis.
+        </div>
+     </div>
+     <div id="overlay"></div>
 </body>
 </html>
