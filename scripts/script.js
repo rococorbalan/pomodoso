@@ -15,98 +15,50 @@ const toggleButton = document.getElementById('toggle-button');
 const restartButton = document.getElementById('restart-button');
 const skipButton = document.getElementById('skip-button');
 
+const saveButton = document.getElementById('save');
+
 let borderColor = document.getElementById('container').style.borderColor;
 const workColor = '#DA8359';
 const breakColor = '#698474';
 
 let time = 1500;
 let breakTime = 300;
-let longBreakTime = 600;
+let restTime = 600;
 let intervalsBeforeBreak = 4;
 timeFormat(time);
 
 
 let isWork = true;
-let isLongBreak = false;
+let isRest = false;
 let isTimerOn = false;
 
-let workInput = document.getElementById('work-input'); 
-let breakInput = document.getElementById('break-input');
-let longBreakInput = document.getElementById('long-input'); 
-let intervalInput = document.getElementById('interval-input');
+let timerInputs = document.querySelectorAll('.timer-input');
 
+timerInputs.forEach(input => {
+    input.addEventListener('input', (event) => {
+        if(validInput(event.target.value)) {
+            saveButton.disabled = false;
+            changeValue(event.target.value, event.target.id)
+        }else {
+            saveButton.disabled = true;
+        }
+    })
+})
+
+saveButton.addEventListener('click', ()=> {
+    intervalsLeft = intervalsBeforeBreak;
+    if(isWork){
+        timeLeft = time;
+    }else if(isRest){
+        timeLeft = restTime;
+    }else {
+        timeLeft = breakTime;
+    }
+    timeFormat(timeLeft);
+})
 
 intervalsLeft = intervalsBeforeBreak;
 timeLeft = time;
-
-workInput.addEventListener('input', () => {
-    if(workInput.value != ''){
-        time = workInput.value*60;
-        if (isTimerOn && isWork) {
-            timeFormat(time);
-            timeLeft = time;
-        }else if(!isTimerOn && isWork){
-            timeFormat(time);
-            timeLeft = time;
-        }
-    }else{
-        time = 1500
-        if (isTimerOn) {
-            timeFormat(time);
-            timeLeft = time;
-        }
-    }
-});
-
-breakInput.addEventListener('input', () => {
-    if(breakInput.value != ''){
-        breakTime = breakInput.value*60;
-        if (isTimerOn && (!isWork && !isLongBreak)) {
-            timeFormat(breakTime);
-            timeLeft = breakTime;
-        }else if(!isTimerOn && !isWork){
-            timeFormat(breakTime);
-            timeLeft = breakTime;
-        }
-    }else{
-        breakTime = 300;
-        if (isTimerOn) {
-            timeFormat(breakTime);
-            timeLeft = breakTime;
-        }
-    }
-});
-
-longBreakInput.addEventListener('input', () => {
-    if(longBreakInput.value != ''){
-        longBreakTime = longBreakInput.value*60;
-        if (isTimerOn && isLongBreak) {
-            timeFormat(longBreakTime);
-            timeLeft = longBreakTime;
-        }else if(!isTimerOn && isLongBreak){
-            timeFormat(longBreakTime);
-            timeLeft = longBreakTime;
-        }
-    }else{
-        longBreakTime = 600;
-        if (isTimerOn) {
-            timeFormat(longBreakTime);
-            timeLeft = longBreakTime;
-        }
-    }
-});
-
-intervalInput.addEventListener('input', () => {
-    if (intervalInput.value != ''){
-        if(intervalInput > 0){
-            intervalsBeforeBreak = intervalInput.value
-            intervalsLeft = intervalsBeforeBreak ;
-        }else{
-            intervalsBeforeBreak = 1
-            intervalsLeft = intervalsBeforeBreak;
-        }
-    }
-});
 
 
 toggleButton.addEventListener('click', () => {
@@ -128,11 +80,11 @@ restartButton.addEventListener('click', () => {
     if(isWork) {
         timeLeft = time;
         timeFormat(timeLeft);
-    }else if (!isWork && !isLongBreak){
+    }else if (!isWork && !isRest){
         timeLeft = breakTime;
         timeFormat(timeLeft);
-    }else if (isLongBreak){
-        timeLeft = longBreakTime;
+    }else if (isRest){
+        timeLeft = restTime;
         timeFormat(timeLeft)
     }
 })
@@ -173,9 +125,9 @@ function switchWork(){
         timeLeft = breakTime;
         clearInterval(countdown);
 
-    }else if (!isWork && !isLongBreak){
+    }else if (!isWork && !isRest){
         if(intervalsLeft == 0){
-            isLongBreak = true;
+            isRest = true;
         }else {
             intervalsLeft--;
             isWork = true;
@@ -188,17 +140,61 @@ function switchWork(){
             clearInterval(countdown);
         }
 
-    }if(isLongBreak){
+    }if(isRest){
         intervalsLeft = intervalsBeforeBreak;
         isWork = false;
-        isLongBreak = false;
+        isRest = false;
         toggleBorderColor();
         isTimerOn = false;
         toggleIcon.innerHTML = playIcon;
 
-        timeFormat(longBreakTime);
-        timeLeft = longBreakTime;
+        timeFormat(restTime);
+        timeLeft = restTime;
         clearInterval(countdown);
+    }
+}
+
+
+function validInput(value) {
+    return value >= 0;
+}
+
+function changeValue(value, input){
+    switch (input){
+        case 'interval-input':
+            if (value == 0){
+                intervalsBeforeBreak = 2;
+            }else {
+                intervalsBeforeBreak = value;
+            }
+            break;
+
+        case 'work-input':
+            if (value == 0){
+                time = 1500;
+            }else {
+                time = value*60;
+            }
+            break;
+
+        case 'break-input':
+            if (value == 0){
+                breakTime = 300;
+            }else {
+                breakTime = value*60;
+            }
+            break;
+            
+        case 'rest-input':
+            if (value == 0){
+                restTime = 600;
+            }else {
+                restTime = value*60;
+            }
+            break;
+
+        default:
+            return;
     }
 }
 
