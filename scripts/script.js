@@ -126,9 +126,13 @@ function switchWork(){
         clearInterval(countdown);
 
     }else if (!isWork && !isRest){
-        if(intervalsLeft == 0){
+        if(intervalsLeft == 1){
             isRest = true;
-        }else {
+            intervalsLeft = intervalsBeforeBreak; 
+            timeFormat(restTime);
+            timeLeft = restTime;
+            clearInterval(countdown);
+        }else{
             intervalsLeft--;
             isWork = true;
             toggleBorderColor();
@@ -140,16 +144,15 @@ function switchWork(){
             clearInterval(countdown);
         }
 
-    }if(isRest){
+    }else if(isRest){
         intervalsLeft = intervalsBeforeBreak;
-        isWork = false;
+        isWork = true;
         isRest = false;
         toggleBorderColor();
         isTimerOn = false;
         toggleIcon.innerHTML = playIcon;
-
-        timeFormat(restTime);
-        timeLeft = restTime;
+        timeFormat(time);
+        timeLeft = time;
         clearInterval(countdown);
     }
 }
