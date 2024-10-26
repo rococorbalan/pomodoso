@@ -17,9 +17,12 @@ const skipButton = document.getElementById('skip-button');
 
 const saveButton = document.getElementById('save');
 
+let progressCircle = document.getElementById('progress-bar');
+const progress = document.getElementById('progress');
+
 let borderColor = document.getElementById('container').style.borderColor;
-const workColor = '#DA8359';
-const breakColor = '#698474';
+const workColor = '#FFBB5C';
+const breakColor = '#e9902a';
 
 let time = 1500;
 let breakTime = 300;
@@ -126,14 +129,17 @@ function switchWork(){
         clearInterval(countdown);
 
     }else if (!isWork && !isRest){
-        if(intervalsLeft == 1){
+        if(intervalsLeft == 0){
             isRest = true;
             intervalsLeft = intervalsBeforeBreak; 
+            updateCircle(intervalsLeft);
             timeFormat(restTime);
             timeLeft = restTime;
             clearInterval(countdown);
         }else{
             intervalsLeft--;
+            updateCircle(intervalsLeft);
+
             isWork = true;
             toggleBorderColor();
             isTimerOn = false;
@@ -146,6 +152,7 @@ function switchWork(){
 
     }else if(isRest){
         intervalsLeft = intervalsBeforeBreak;
+        updateCircle(intervalsLeft);
         isWork = true;
         isRest = false;
         toggleBorderColor();
@@ -165,11 +172,7 @@ function validInput(value) {
 function changeValue(value, input){
     switch (input){
         case 'interval-input':
-            if (value == 0){
-                intervalsBeforeBreak = 2;
-            }else {
-                intervalsBeforeBreak = value;
-            }
+            intervalsBeforeBreak = value - 1;
             break;
 
         case 'work-input':
@@ -249,4 +252,15 @@ function toggleBorderColor() {
     }
 }
 
+function changePercentage(input, num) {
+    return(num * 100)/input;
+}
 
+function updateCircle (num) {
+    percent = changePercentage(intervalsBeforeBreak, num);
+    progressCircleStyle = `conic-gradient(#6A9C89 ${percent}%, #C1D8C3 0)`;
+
+    if(progressCircle) {
+        progressCircle.style.background = progressCircleStyle;
+    }
+}

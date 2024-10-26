@@ -22,15 +22,10 @@ body{
     height: 350px;
 
     border: 16px solid;
-    border-color: #DA8359;
-    outline: 8px solid #698474;
-    border-radius: 350px;
+    border-color: #FFBB5C;
+    outline: 8px solid #e9902a;
+    border-radius: 50%;
     background-color: #ECDFCC;
-
-    
-    box-shadow: 0px 15px 0px 10px rgba(145, 165, 118, 0.76);
-    -webkit-box-shadow: 0px 15px 0px 10px rgba(145, 165, 118, 0.76);
-    -moz-box-shadow: 0px 15px 0px 10px rgba(145, 165, 118, 0.76);
         
 }
 
@@ -246,3 +241,15 @@ label {
     font-size: 20px;
 }
 
+#progress-bar{
+    position: absolute;
+    width: 425px;
+    height: 425px;
+    border-radius: 50%;
+    background: conic-gradient(#6A9C89 100%, #C1D8C3 0);
+    z-index: -3;
+    
+    box-shadow: 0px 15px 0px 10px rgba(145, 165, 118, 0.76);
+    -webkit-box-shadow: 0px 15px 0px 10px rgba(145, 165, 118, 0.76);
+    -moz-box-shadow: 0px 15px 0px 10px rgba(145, 165, 118, 0.76);
+}
